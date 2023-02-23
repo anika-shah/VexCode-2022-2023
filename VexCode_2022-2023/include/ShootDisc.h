@@ -1,0 +1,1 @@
+void ShootDiscs(int numberOfDiscs);

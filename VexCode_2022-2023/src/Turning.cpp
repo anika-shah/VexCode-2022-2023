@@ -1,9 +1,15 @@
 #include "vex.h"
+#include "robot-config.h"
 
 /*
 This function turns the robot by the provided amount of degrees in the provided direction
 */
 void TurnUsingGyro(int numOfDegrees, vex::turnType dir) {
+ 
+  int frontL_velocityPercentage = FrontL_DT.velocity(percent);
+  int frontR_velocityPercentage = FrontR_DT.velocity(percent);
+  int backL_velocityPercentage = BackL_DT.velocity(percent);
+  int backR_velocityPercentage = BackR_DT.velocity(percent);
 
   FrontL_DT.setVelocity(15, percent);
   FrontR_DT.setVelocity(15, percent);
@@ -61,16 +67,17 @@ void TurnUsingGyro(int numOfDegrees, vex::turnType dir) {
   BackL_DT.stop();
   BackR_DT.stop();
 
-  FrontL_DT.setVelocity(85, percent);
-  FrontR_DT.setVelocity(85, percent);
-  BackL_DT.setVelocity(85, percent);
-  BackR_DT.setVelocity(85, percent);
+  FrontL_DT.setVelocity(frontL_velocityPercentage, percent);
+  FrontR_DT.setVelocity(frontR_velocityPercentage, percent);
+  BackL_DT.setVelocity(backL_velocityPercentage, percent);
+  BackR_DT.setVelocity(backR_velocityPercentage, percent);
 }
 
+
 void TurnToTarget(float target) {
+
   float current = Inertial.heading(degrees);
   float x = target-current;
-  Brain.Screen.print(Inertial.heading(degrees));
 
   if (x > 0) {
     if (x <= 180) {
@@ -88,5 +95,6 @@ void TurnToTarget(float target) {
       TurnUsingGyro(-x, left);
     }
   }
-  Brain.Screen.print(Inertial.heading(degrees));
+
+  printf("Expected %f, actual %f\n", target*1.0, Inertial.heading(degrees));
 }

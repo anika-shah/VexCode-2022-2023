@@ -1,4 +1,5 @@
 #include "vex.h"
+#include "robot-config.h"
 
 void MoveStraight(int numberOfDegrees, vex::directionType dir) {
 
